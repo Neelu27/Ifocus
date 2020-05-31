@@ -1,0 +1,49 @@
+{
+  "expo": {
+    "name": "iFocus",
+    "slug": "Cioc-iFocus",
+    "privacy": "public",
+    "sdkVersion": "34.0.0",
+    "platforms": [
+      "android"
+    ],
+    "version": "1.8.2",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "splash": {
+      "image": "./assets/images/asset.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1C71A5"
+
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier":"in.cioc.iFocus",
+      "config": {
+      "googleSignIn": {
+        "reservedClientId": "com.googleusercontent.apps.370697243487-74qvbrbfouv8svfk44orm867ho9c3chk"
+        }
+      }
+    },
+    "android": {
+      "versionCode": 12,
+      "package": "in.cioc.iFocus",
+      "config":{
+         "googleSignIn":{
+           "apiKey":"AIzaSyD-IQ1Ohj4lDtV2-Nzpia7WN8NsC4J8Jc4",
+           "certificateHash":"605A9B23BD137146CEA891F6F82DBBAB4BB5A5FE"
+           }
+      }
+
+
+
+    }
+
+  }
+}
