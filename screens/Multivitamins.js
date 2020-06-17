@@ -7,7 +7,6 @@ import {
   Text,
   TouchableOpacity,
   View,
-
   Dimensions,ImageBackground,
   TextInput, FlatList, AsyncStorage, Alert, Linking, PermissionsAndroid, ToastAndroid,ActivityIndicator
 } from 'react-native';
@@ -22,10 +21,6 @@ import * as Permissions from 'expo-permissions';
 import * as Google from 'expo-google-app-auth';
 import * as Facebook from 'expo-facebook';
 import settings from '../constants/Settings.js';
-const { width } = Dimensions.get('window');
-const height = width * 0.8
-const SERVER_URL = settings.url
-const themeColor = settings.themeColor
 import { connect } from 'react-redux';
 import * as actions from '../actions/index';
 import * as actionTypes from '../actions/actionTypes';
@@ -33,21 +28,21 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Dropdown } from 'react-native-material-dropdown';
 import DatePicker from 'react-native-datepicker';
 import { Slider } from 'react-native-elements';
-// import {Slider} from 'react-native-slider';
-// import VolumeSlider from 'react-native-volume-slider';
-// import { Player } from 'react-native-audio-streaming';
 import { Audio } from 'expo-av';
 import { ScrollableTabView, DefaultTabBar, ScrollableTabBar, } from '@valdio/react-native-scrollable-tabview';
 import TabBar from '../components/TabBar';
 import SellerOrderCompo from '../components/SellerOrderCompo';
 import SellerOrderAnnounce from '../components/SellerOrderAnnounce';
+
+const { width } = Dimensions.get('window');
+const height = width * 0.8
+const SERVER_URL = settings.url
+const themeColor = settings.themeColor
 class Multivitamins extends React.Component {
 
   static navigationOptions = {
     header:null,
-
   }
-
 
   constructor(props) {
     super(props);
@@ -57,17 +52,6 @@ class Multivitamins extends React.Component {
         date: new Date(),
         play:false,
         value:0,
-        RecentSongs:[{img:require('../assets/sound/s3.jpeg'),name:'25 Essentials Shiva'},
-                     {img:require('../assets/sound/s4.jpeg'),name:'Sunderkand'},
-                     {img:require('../assets/sound/s2.jpeg'),name:'Top Chalisha Collection'},
-                     {img:require('../assets/sound/s11.jpeg'),name:'BhagwatGita'},
-                     {img:require('../assets/sound/s1.jpeg'),name:'Bhajan Sangrah'},],
-        artist:[{img:require('../assets/sound/anu.jpeg'),name:'Anuradha Paudwal'},
-                {img:require('../assets/sound/hari.jpg'),name:'Hariharan'},
-                {img:require('../assets/sound/jag.jpeg'),name:'Jagjit Singh '},
-                {img:require('../assets/sound/shan.jpeg'),name:'Shankar Mahadevan'},
-                {img:require('../assets/sound/shre.jpg'),name:'Shreya Ghoshal'},
-                {img:require('../assets/sound/hari.jpeg'),name:'Hariharan'},],
         isPlaying: false,
         playbackInstance: new Audio.Sound(),
         currentIndex: 0,
@@ -78,31 +62,24 @@ class Multivitamins extends React.Component {
         favorite:false,
         color1:'red',
         like: 23,
-         dislike: 3,
-         likeActive: false,
-         dislikeActive: false,
-         prod:[{uri:require('../assets/ifocus/cart_Revital.png'),name:'cart_Revital'},
-               {uri:require('../assets/ifocus/nutrafirstvitamin.png'),name:'nutrafirst vitamin'},
-               {uri:require('../assets/ifocus/nutrilitevitamin.png'),name:'nutrilite vitamin'},
-               {uri:require('../assets/ifocus/inlifevitamin.png'),name:'inlife vitamin'},
-               {uri:require('../assets/ifocus/cart_Revital.png'),name:'cart_Revital'},
-               {uri:require('../assets/ifocus/nutrafirstvitamin.png'),name:'nutrafirst vitamin'},
-               {uri:require('../assets/ifocus/nutrilitevitamin.png'),name:'nutrilite vitamin'},
-               {uri:require('../assets/ifocus/inlifevitamin.png'),name:'inlife vitamin'},
-               {uri:require('../assets/ifocus/cart_Revital.png'),name:'cart_Revital'},
-               {uri:require('../assets/ifocus/nutrafirstvitamin.png'),name:'nutrafirst vitamin'},
-               {uri:require('../assets/ifocus/nutrilitevitamin.png'),name:'nutrilite vitamin'},
-             {uri:require('../assets/ifocus/inlifevitamin.png'),name:'inlife vitamin'},           ],
+        dislike: 3,
+        likeActive: false,
+        dislikeActive: false,
+        prod:[{uri:require('../assets/ifocus/cart_Revital.png'),name:'cart_Revital'},
+              {uri:require('../assets/ifocus/nutrafirstvitamin.png'),name:'nutrafirst vitamin'},
+              {uri:require('../assets/ifocus/nutrilitevitamin.png'),name:'nutrilite vitamin'},
+              {uri:require('../assets/ifocus/inlifevitamin.png'),name:'inlife vitamin'},
+              {uri:require('../assets/ifocus/cart_Revital.png'),name:'cart_Revital'},
+              {uri:require('../assets/ifocus/nutrafirstvitamin.png'),name:'nutrafirst vitamin'},
+              {uri:require('../assets/ifocus/nutrilitevitamin.png'),name:'nutrilite vitamin'},
+              {uri:require('../assets/ifocus/inlifevitamin.png'),name:'inlife vitamin'},
+              {uri:require('../assets/ifocus/cart_Revital.png'),name:'cart_Revital'},
+              {uri:require('../assets/ifocus/nutrafirstvitamin.png'),name:'nutrafirst vitamin'},
+              {uri:require('../assets/ifocus/nutrilitevitamin.png'),name:'nutrilite vitamin'},
+              {uri:require('../assets/ifocus/inlifevitamin.png'),name:'inlife vitamin'},           ],
     }
     this.playbackInstance = null;
   }
-
-
-  // componentDidMount=async()=>{
-  //   this.getStore()
-  // }
-
-
 
   render() {
     const prod=this.props.navigation.getParam('item',null);
@@ -123,7 +100,7 @@ class Multivitamins extends React.Component {
                     <FontAwesome name={'search'} size={22} />
              </TouchableOpacity>
              <TouchableOpacity style={{ marginHorizontal: 10 ,paddingRight:5}}  onPress={()=>this.props.navigation.navigate('CartScreen')}  >
-                   <Image source={require('../assets/ifocus/cart.png')}style={{height:22,width:20}}  />
+                   <Image source={require('../assets/ifocus/cart.png')}style={{height:22,width:20}}resizeMode={'contain'}  />
              </TouchableOpacity>
            </View>
           </View>
@@ -154,7 +131,7 @@ class Multivitamins extends React.Component {
                                   width:width*0.4,paddingHorizontal:15,paddingVertical:15}]}>
                        <ImageBackground source={require('../assets/ifocus/blobvector.png')} style={{flexDirection:'row',justifyContent:'center',width:'100%',height:'100%',alignItems:'center'}}>
                             <View style={{height:width*0.25,width:width*0.23,alignSelf:'center',borderWidth:0}}>
-                               <Image source={item.uri} style={{width:'100%', height:'100%',marginTop:0,borderRadius:0,}}/>
+                               <Image source={item.uri} style={{width:'100%', height:'100%',marginTop:0,borderRadius:0,}}resizeMode={'contain'}/>
                            </View>
                       </ImageBackground>
                    </View>
@@ -177,54 +154,42 @@ class Multivitamins extends React.Component {
   }
 }
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     alignItems: 'center',
-//     justifyContent: 'space-between',
-//
-//   },
-//   slider: {
-//     height: 30,
-//     marginLeft: 7,
-//   }
-// });
 const styles = StyleSheet.create({
- container: {
-  flex: 1,
-  backgroundColor: '#fff',
-  alignItems: 'center',
-  justifyContent: 'center'
- },
- albumCover: {
-  width: 250,
-  height: 250
- },
- trackInfo: {
-  padding: 40,
-  backgroundColor: '#fff'
- },
- trackInfoText: {
-  textAlign: 'center',
-  flexWrap: 'wrap',
-  color: '#550088'
- },
- largeText: {
-  fontSize: 22
- },
- smallText: {
-  fontSize: 16
- },
- control: {
-  margin: 20
- },
- controls: {
-  flexDirection: 'row'
- }
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  albumCover: {
+    width: 250,
+    height: 250
+  },
+  trackInfo: {
+    padding: 40,
+    backgroundColor: '#fff'
+  },
+  trackInfoText: {
+    textAlign: 'center',
+    flexWrap: 'wrap',
+    color: '#550088'
+  },
+  largeText: {
+    fontSize: 22
+  },
+  smallText: {
+    fontSize: 16
+  },
+  control: {
+    margin: 20
+  },
+  controls: {
+    flexDirection: 'row'
+  }
 })
 
 const mapStateToProps =(state) => {
-    return {}
+  return {}
 }
 
 const mapDispatchToProps = (dispatch) => {

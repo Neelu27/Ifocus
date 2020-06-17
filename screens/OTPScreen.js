@@ -43,6 +43,10 @@ class OTPScreen extends React.Component {
         text4:'',
     }
   }
+  verify=()=>{
+    AsyncStorage.setItem("login", JSON.stringify(true))
+    this.props.navigation.navigate('HomeScreen')
+  }
 
   render() {
     const ItmMobile=this.props.navigation.getParam('item',null);
@@ -104,7 +108,7 @@ class OTPScreen extends React.Component {
                                     shadowRadius:15,
                                     shadowOffset:{height:2,width:0},
                                     elevation:5,}}
-                            onPress={()=>{this.props.navigation.navigate('HomeScreen')}}>
+                            onPress={()=>{this.verify()}}>
                             {/* <MaterialIcons name={'arrow-forward'} size={22}color={'#fff'}style={{paddingHorizontal:22,paddingVertical:20}}/> */}
                             <Text style={{fontSize:18,paddingHorizontal:30,paddingVertical:10,color:'#fff'}}>Verify Code</Text>
                         </TouchableOpacity>

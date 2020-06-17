@@ -57,17 +57,6 @@ class InsurencehelthPolicy extends React.Component {
         date: new Date(),
         play:false,
         value:0,
-        RecentSongs:[{img:require('../assets/sound/s3.jpeg'),name:'25 Essentials Shiva'},
-                     {img:require('../assets/sound/s4.jpeg'),name:'Sunderkand'},
-                     {img:require('../assets/sound/s2.jpeg'),name:'Top Chalisha Collection'},
-                     {img:require('../assets/sound/s11.jpeg'),name:'BhagwatGita'},
-                     {img:require('../assets/sound/s1.jpeg'),name:'Bhajan Sangrah'},],
-        artist:[{img:require('../assets/sound/anu.jpeg'),name:'Anuradha Paudwal'},
-                {img:require('../assets/sound/hari.jpg'),name:'Hariharan'},
-                {img:require('../assets/sound/jag.jpeg'),name:'Jagjit Singh '},
-                {img:require('../assets/sound/shan.jpeg'),name:'Shankar Mahadevan'},
-                {img:require('../assets/sound/shre.jpg'),name:'Shreya Ghoshal'},
-                {img:require('../assets/sound/hari.jpeg'),name:'Hariharan'},],
         isPlaying: false,
         playbackInstance: new Audio.Sound(),
         currentIndex: 0,
@@ -81,28 +70,9 @@ class InsurencehelthPolicy extends React.Component {
          dislike: 3,
          likeActive: false,
          dislikeActive: false,
-         prod:[{name:'New products Detail',ite:'items:22',value:'22 min ago',img:require('../assets/video/v.png')},
-              {name:'New products Detail Doc',ite:'items:22',value:'22 min ago',img:require('../assets/video/word.png')},
-              {name:'New products Detail',ite:'items:22',value:'22 min ago',img:require('../assets/video/powerpoint.png')},
-              {name:'New products Detail Doc',ite:'items:22',value:'22 min ago',img:require('../assets/video/v.png')},
-              {name:'New products Detail Doc',ite:'items:22',value:'22 min ago',img:require('../assets/video/word.png')},
-              {name:'New products Detail',ite:'items:22',value:'22 min ago',img:require('../assets/video/powerpoint.png')},
-              {name:'New products Detail',ite:'items:22',value:'22 min ago',img:require('../assets/video/v.png')},
-                   {name:'New products Detail Doc',ite:'items:22',value:'22 min ago',img:require('../assets/video/word.png')},
-                   {name:'New products Detail',ite:'items:22',value:'22 min ago',img:require('../assets/video/powerpoint.png')},
-                   {name:'New products Detail Doc',ite:'items:22',value:'22 min ago',img:require('../assets/video/v.png')},
-                   {name:'New products Detail Doc',ite:'items:22',value:'22 min ago',img:require('../assets/video/word.png')},
-                   {name:'New products Detail',ite:'items:22',value:'22 min ago',img:require('../assets/video/powerpoint.png')}]
     }
     this.playbackInstance = null;
   }
-
-
-  // componentDidMount=async()=>{
-  //   this.getStore()
-  // }
-
-
 
   render() {
     const audio=this.props.navigation.getParam('item',null);
@@ -110,19 +80,14 @@ class InsurencehelthPolicy extends React.Component {
     return (
       <View style={{flex:1}}>
           <View style={{height:Constants.statusBarHeight,backgroundColor:'#103368'}}></View>
-          <View  style={{justifyContent:'space-between',backgroundColor:'#55CED2',borderBottomWidth:0,
+          <View  style={{justifyContent:'space-between',backgroundColor:'#D5F3FF',borderBottomWidth:0,
             height:55,width:width,flexDirection:'row',alignItems:'center'}}>
-
               <TouchableOpacity onPress={()=>{this.props.navigation.goBack();}}>
                    <MaterialIcons name={'arrow-back'} size={30} color={'#000'} style={{paddingLeft:10}}/>
               </TouchableOpacity>
                 <Text style={{fontSize:24,color:'#000',alignItems:'center',paddingTop:10,paddingBottom:6,marginRight:width*0.3}}>Individual Health</Text>
-                {/* <TouchableOpacity style={{ marginHorizontal: 10 }}   >
-                   <Image source={require('../AllImage/Icons-POI/notification.png')} style={{height:22,width:20,tintColor:'#fff'}}  />
-                </TouchableOpacity> */}
-
           </View>
-          <View style={{backgroundColor:'#55CED2',paddingHorizontal:10}}>
+          <View style={{backgroundColor:'#D5F3FF',paddingHorizontal:10}}>
             <Text style={{textAlign:'center',fontSize:24,paddingBottom:10}}>Insurence Plan</Text>
             <Text style={{textAlign:'center',fontSize:14}}>Health Insurence to cover all related expences</Text>
             <View style={{flexDirection:'row',justifyContent:'space-between',paddingVertical:10,paddingHorizontal:15}}>
@@ -142,7 +107,7 @@ class InsurencehelthPolicy extends React.Component {
           </View>
           <ScrollableTabView
                 refreshControlStyle={{backgroundColor: 'red'}}
-                tabBarBackgroundColor={'#55CED2'}
+                tabBarBackgroundColor={'#D5F3FF'}
                 tabBarActiveTextColor={'#000'}
                 tabBarInactiveTextColor={'#000'}
                 tabBarTextStyle={{fontSize: 16}}
@@ -160,64 +125,12 @@ class InsurencehelthPolicy extends React.Component {
                 <ScrollView tabLabel="Features Not Covered" style={{backgroundColor:'#fff',marginTop:-20}}>
                     <Insurence navigation={this.props.navigation}  />
                 </ScrollView>
-
-
-
             </ScrollableTabView>
-          {/* <ScrollView style={{marginVertical:0,backgroundColor:'#CECECF',paddingBottom:100}}>
-            <FlatList
-                data={this.state.prod}
-                extraData={this.state}
-                showsHorizontalScrollIndicator={false}
-                inverted={false}
-                scrollToEnd={true}
-
-                nestedScrollEnabled={true}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({item, index})=>{
-                  return(
-                <View style={{flex:1,
-
-                              marginTop:10,
-                              alignItems:'center',
-                              borderWidth:0,
-                              paddingHorizontal:2,
-                              paddingVertical:2,
-                              width:width*0.9,
-                              borderColor:'#000',
-                              justifyContent:'center',alignSelf:'center',
-                              borderRadius:17,backgroundColor:'#fff',shadowColor:"#fefefe",
-                              shadowOpacity:0.2,shadowRadius:15,
-                              shadowOffset:{height:2,width:0},elevation:5,}}>
-                    <View style={{paddingVertical:10,paddingHorizontal:4,width:width*0.85,alignSelf:'center',flexDirection:'row',justifyContent:'space-between'}}>
-                            <View style={{height:22,width:22}}>
-                            <Image source={item.img} style={{height:'100%',width:'100%'}}/>
-                            </View>
-                            <Text style={{fontSize:14,color:'#000'}}>{item.name}</Text>
-                            <Text style={{fontSize:14,color:'#000'}}>{item.value}</Text>
-
-
-                    </View>
-                </View>) }}
-                />
-          </ScrollView> */}
      </View>
     );
   }
 }
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     alignItems: 'center',
-//     justifyContent: 'space-between',
-//
-//   },
-//   slider: {
-//     height: 30,
-//     marginLeft: 7,
-//   }
-// });
 const styles = StyleSheet.create({
  container: {
   flex: 1,

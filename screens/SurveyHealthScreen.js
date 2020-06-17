@@ -57,17 +57,6 @@ class SurveyHealthScreen extends React.Component {
         date: new Date(),
         play:false,
         value:0,
-        RecentSongs:[{img:require('../assets/sound/s3.jpeg'),name:'25 Essentials Shiva'},
-                     {img:require('../assets/sound/s4.jpeg'),name:'Sunderkand'},
-                     {img:require('../assets/sound/s2.jpeg'),name:'Top Chalisha Collection'},
-                     {img:require('../assets/sound/s11.jpeg'),name:'BhagwatGita'},
-                     {img:require('../assets/sound/s1.jpeg'),name:'Bhajan Sangrah'},],
-        artist:[{img:require('../assets/sound/anu.jpeg'),name:'Anuradha Paudwal'},
-                {img:require('../assets/sound/hari.jpg'),name:'Hariharan'},
-                {img:require('../assets/sound/jag.jpeg'),name:'Jagjit Singh '},
-                {img:require('../assets/sound/shan.jpeg'),name:'Shankar Mahadevan'},
-                {img:require('../assets/sound/shre.jpg'),name:'Shreya Ghoshal'},
-                {img:require('../assets/sound/hari.jpeg'),name:'Hariharan'},],
         isPlaying: false,
         playbackInstance: new Audio.Sound(),
         currentIndex: 0,
@@ -127,7 +116,7 @@ class SurveyHealthScreen extends React.Component {
                 </TouchableOpacity> */}
 
           </View>
-          <View style={{paddingVertical:10,paddingHorizontal:15}}>
+          <ScrollView style={{paddingVertical:10,paddingHorizontal:15}}>
             <Text style={{fontSize:18,marginVertical:6}}>Please enter the details below</Text>
             <Text style={{fontSize:18,marginVertical:6}}>Enter your details</Text>
             <Text style={{fontSize:18,marginVertical:6}}>First Name</Text>
@@ -215,7 +204,7 @@ class SurveyHealthScreen extends React.Component {
               style={{marginVertical:50,backgroundColor:'#5599D2',borderRadius:10,justifyContent:'center',alignSelf:'center',alignItems:'center'}}>
               <Text style={{fontSize:20,color:'#fff',paddingHorizontal:35,paddingVertical:8}}>Submeet</Text>
             </TouchableOpacity>
-          </View>
+          </ScrollView>
      </View>
     );
   }

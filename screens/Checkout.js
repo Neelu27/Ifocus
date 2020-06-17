@@ -155,7 +155,6 @@ next=(item)=>{
 
           </View>
 
-          {/* <View style={{paddingHorizontal:15,paddingVertical:10,marginVertical:15}}><Text style={{fontSize:25}}>Health Product</Text></View> */}
           <ScrollView style={{marginVertical:0,backgroundColor:'#fff',paddingBottom:200,marginHorizontal:15}}>
           <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center',paddingVertical:10}}>
               <View style={{alignItems:'center',justifyContent:'center'}}>
@@ -227,18 +226,7 @@ next=(item)=>{
   }
 }
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     alignItems: 'center',
-//     justifyContent: 'space-between',
-//
-//   },
-//   slider: {
-//     height: 30,
-//     marginLeft: 7,
-//   }
-// });
+
 const styles = StyleSheet.create({
  container: {
   flex: 1,

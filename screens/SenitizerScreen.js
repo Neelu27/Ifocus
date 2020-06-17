@@ -57,17 +57,6 @@ class SenitizerScreen extends React.Component {
         date: new Date(),
         play:false,
         value:0,
-        RecentSongs:[{img:require('../assets/sound/s3.jpeg'),name:'25 Essentials Shiva'},
-                     {img:require('../assets/sound/s4.jpeg'),name:'Sunderkand'},
-                     {img:require('../assets/sound/s2.jpeg'),name:'Top Chalisha Collection'},
-                     {img:require('../assets/sound/s11.jpeg'),name:'BhagwatGita'},
-                     {img:require('../assets/sound/s1.jpeg'),name:'Bhajan Sangrah'},],
-        artist:[{img:require('../assets/sound/anu.jpeg'),name:'Anuradha Paudwal'},
-                {img:require('../assets/sound/hari.jpg'),name:'Hariharan'},
-                {img:require('../assets/sound/jag.jpeg'),name:'Jagjit Singh '},
-                {img:require('../assets/sound/shan.jpeg'),name:'Shankar Mahadevan'},
-                {img:require('../assets/sound/shre.jpg'),name:'Shreya Ghoshal'},
-                {img:require('../assets/sound/hari.jpeg'),name:'Hariharan'},],
         isPlaying: false,
         playbackInstance: new Audio.Sound(),
         currentIndex: 0,
@@ -123,7 +112,7 @@ class SenitizerScreen extends React.Component {
                     <FontAwesome name={'search'} size={22} />
              </TouchableOpacity>
              <TouchableOpacity style={{ marginHorizontal: 10 ,paddingRight:5}} onPress={()=>this.props.navigation.navigate('CartScreen')}   >
-                   <Image source={require('../assets/ifocus/cart.png')}style={{height:22,width:20}}  />
+                   <Image source={require('../assets/ifocus/cart.png')}style={{height:22,width:20}}resizeMode={'contain'}  />
              </TouchableOpacity>
            </View>
           </View>
@@ -154,7 +143,7 @@ class SenitizerScreen extends React.Component {
                                   width:width*0.4,paddingHorizontal:15,paddingVertical:15}]}>
                        <ImageBackground source={require('../assets/ifocus/blobvector.png')} style={{flexDirection:'row',justifyContent:'center',width:'100%',height:'100%',alignItems:'center'}}>
                             <View style={{height:width*0.25,width:width*0.23,alignSelf:'center',borderWidth:0}}>
-                               <Image source={item.uri} style={{width:'100%', height:'100%',marginTop:0,borderRadius:0,}}/>
+                               <Image source={item.uri} style={{width:'100%', height:'100%',marginTop:0,borderRadius:0,}}resizeMode={'contain'}/>
                            </View>
                       </ImageBackground>
                    </View>

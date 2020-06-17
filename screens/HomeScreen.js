@@ -16,23 +16,22 @@ import { MonoText } from '../components/StyledText';
 import  Constants  from 'expo-constants';
 import { withNavigationFocus,DrawerActions ,DrawerNavigator} from 'react-navigation';
 import settings from '../constants/Settings.js';
-import CaroselScreen from '../components/CaroselScreen';
+// import CaroselScreen from '../components/CaroselScreen';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import { connect } from 'react-redux';
 import * as actions from '../actions/index';
 import * as actionTypes from '../actions/actionTypes';
 import { LinearGradient } from 'expo-linear-gradient';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
-// import Video from 'react-native-video';
 import Timeline from '../index1';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconFont from 'react-native-vector-icons/FontAwesome';
 import ModalBox from 'react-native-modalbox';
-// import { Switch } from 'react-native-switch';
-// import Video from 'react-native-af-video-player';
 import {Video} from 'expo-av';
+import constants  from '../constants/Settings.js';
 
-
+const serverURL = constants.url;
+const themeColor= constants.themeColor;
 const { width } = Dimensions.get('window');
 const height = width * 0.8
 const { UIManager } = NativeModules;
@@ -43,26 +42,6 @@ class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state={
-      product:[{name:'Hotel Empire',type:'non-veg',rs:'200/',off:'30%',uri:require('../assets/images/11.jpeg'),rate:4.1,vote:'233 vote'},
-                {name:'Biryani House',type:'non-veg',rs:'100/',off:'40%',uri:require('../assets/images/12.jpeg'),rate:4.2,vote:'75676 vote'},
-                {name:'Behrouz Biryani',type:'non-veg',rs:'300/',off:'30%',uri:require('../assets/images/13.jpeg'),rate:3.7,vote:'5678 vote'},
-                {name:'Hotel Udepy Sagar',type:'non-veg',rs:'200/',off:'30%',uri:require('../assets/images/14.jpeg'),rate:3.1,vote:'578 vote'},
-                {name:'Indus',type:'non-veg',rs:'200/',off:'30%',uri:require('../assets/images/15.jpeg'),rate:4.1,vote:'233 vote'},
-                {name:'RajBhog',type:'non-veg',rs:'200/',off:'30%',uri:require('../assets/images/16.jpeg'),rate:4.4,vote:'1244 vote'},
-                {name:'Panjabi Dhaba',type:'non-veg',rs:'200/',off:'30%',uri:require('../assets/images/17.jpeg'),rate:4.5,vote:'3578 vote'},
-                {name:'Kabab Point',type:'non-veg',rs:'200/',off:'30%',uri:require('../assets/images/18.jpeg'),rate:4.5,vote:'4000 vote'}],
-      products:[{name:require('../assets/images/off1.jpeg'),img:require('../assets/video/bhag4.jpg'),uri:'https://www.dropbox.com/s/df2d2gf1dvnr5uj/Sample_1280x720_mp4.mp4',namei:'BhagwatGita',},
-                {name:require('../assets/images/off3.jpeg'),img:require('../assets/video/ram1.jpg'),uri:'https://www.dropbox.com/s/s1rc65usypfacde/Sample_1280x720_webm.webm',namei:'Ramayana',},
-                {name:require('../assets/images/off2.jpeg'),img:require('../assets/video/maha1.jpg'),uri:'https://www.dropbox.com/s/y0ry2w3i7q59ozx/Sample_854x480.mp4',namei:'Mahabhart',},
-                {name:require('../assets/images/off1.jpeg'),img:require('../assets/video/bhag1.jpg'),uri:'https://www.dropbox.com/s/swjjl14kcamsodn/Sample_640x360.mp4',namei:'BhagwatGita part-1',},
-                {name:require('../assets/images/off3.jpeg'),img:require('../assets/video/bhag2.png'),uri:'https://www.dropbox.com/s/0x2ke57h7wv49ll/Sample_512x288.mp4',namei:'BhagwatGita part-2',},
-                {name:require('../assets/images/off2.jpeg'),img:require('../assets/video/maha2.jpg'),uri:'https://www.dropbox.com/s/df2d2gf1dvnr5uj/Sample_1280x720_mp4.mp4',namei:'Mahabhart part-1',},
-                {name:require('../assets/images/off1.jpeg'),img:require('../assets/video/maha3.jpg'),uri:'https://www.dropbox.com/s/0x2ke57h7wv49ll/Sample_512x288.mp4',namei:'Mahabhart part-2',},
-                {name:require('../assets/images/off3.jpeg'),img:require('../assets/video/bhag3.jpeg'),uri:'https://www.dropbox.com/s/0x2ke57h7wv49ll/Sample_512x288.mp4',namei:'BhagwatGita',count:'x1',},
-                {name:require('../assets/images/off2.jpeg'),img:require('../assets/video/ram2.jpg'),uri:'https://www.dropbox.com/s/0x2ke57h7wv49ll/Sample_512x288.mp4',namei:'Ramayana',count:'x1',}],
-      images : [{name:'Primary',value:'Rs. 4,000/-',},
-                {name:'Premium',value:'Rs. 10,000/-',},
-                {name:'Platnum',value:'Rs. 20,000/-',}],
       enabled:false,
       switchValue: false,
       prod:[{uri:require('../assets/ifocus/Multivitamins.png'),name:'Multivitamins'},
@@ -79,6 +58,7 @@ class HomeScreen extends React.Component {
       st1:false,
       st2:false,
       st3:false,
+      login:false,
       }
     }
 
@@ -88,10 +68,152 @@ class HomeScreen extends React.Component {
         return {header:null}
       };
 
+    componentDidMount=()=>{
+      // this.userCheck();
+    }
+    userCheck=async()=>{
+      const userToken = await AsyncStorage.getItem('userpk');
+      const sessionid = await AsyncStorage.getItem('sessionid');
+      const csrf = await AsyncStorage.getItem('csrf');
+      fetch(serverURL + '/api/HR/userSearch/?mode=mySelf', {
+          headers: {
+             "Cookie" :"csrftoken="+csrf+";sessionid=" + sessionid +";",
+             'Accept': 'application/json',
+             'Content-Type': 'application/json',
+             'Referer': serverURL,
+             'X-CSRFToken': csrf
+          }
+        }).then((response) => {
+          if(response.status == '200'){
+            this.setState({userScreen:'UseProfile'})
+            return
+          }else{
+            AsyncStorage.removeItem('userpk')
+            AsyncStorage.removeItem('sessionid')
+            AsyncStorage.removeItem('csrf')
+            AsyncStorage.removeItem('cart')
+            AsyncStorage.removeItem('counter')
+            AsyncStorage.setItem("login", JSON.stringify(false))
+            this.setState({userScreen:'LoginScreenV2'})
+            return
+          }
+      }).then(()=>{return}).catch((error) => {
+        AsyncStorage.removeItem('userpk')
+        AsyncStorage.removeItem('sessionid')
+        AsyncStorage.removeItem('csrf')
+        AsyncStorage.removeItem('cart')
+        AsyncStorage.removeItem('counter')
+        AsyncStorage.setItem("login", JSON.stringify(false))
+          return
+        });
+    }
+
+
   search(){
      LayoutAnimation.spring();
      var search = !this.state.search
      this.setState({search:!this.state.search})
+   }
+   dailyEssential=()=>{
+     return(
+     <View style={{borderWidth:0,marginHorizontal:12}}>
+         <View style={{justifyContent:'space-between',flexDirection:'row',paddingBottom:4,paddingTop:8}}>
+             <Text style={{fontSize:18}}>Daily Essential</Text>
+             <TouchableOpacity onPress={()=>this.props.navigation.navigate('HealthProduct')}>
+               <Text style={{fontSize:18,color:'#55CED2'}}>See All</Text>
+             </TouchableOpacity>
+         </View>
+         <FlatList
+             data={this.state.prod}
+             showsHorizontalScrollIndicator={false}
+             extraData={this.state.prod}
+             style={{}}
+             inverted={false}
+             scrollToEnd={true}
+             horizontal={true}
+             nestedScrollEnabled={true}
+             keyExtractor={(item, index) => index.toString()}
+             renderItem={({item, index})=>{
+            return(
+          <View style={{flex:1,backgroundColor:'#fff',paddingLeft:index==0?10:0,paddingRight:15,paddingTop:8}}>
+            <TouchableWithoutFeedback  onPress={()=>this.props.navigation.navigate('Multivitamins',{item:item})} >
+              <View>
+                <Card containerStyle={[ {borderWidth: 0, borderColor: '#fff',borderRadius:15,height:width*0.33,width:width*0.33,margin:0,padding:0,marginRight:0,marginLeft:0}]}>
+                   <View style={{height:'100%'}}>
+                     <View style={{position:'absolute',left:0,right:0,top:0,bottom:0,}}>
+                           <Image source={item.uri} style={{width:'100%', height:'100%',marginTop:0,borderRadius:15,backgroundColor:'#fff'}}
+                             resizeMode={'contain'}/>
+                     </View>
+                   </View>
+                </Card>
+                <View style={{flex:1,alignItems:'center',justifyContent:'center',height:40,width:width*0.33}}>
+                    <Text style={{ fontSize: 14, color: 'grey', fontWeight: '300', marginHorizontal: 20,textAlign:'center' }} numberOfLines={1}>{item.name}</Text>
+                </View>
+              </View>
+              </TouchableWithoutFeedback>
+            </View>
+          ) }}
+          />
+        </View>
+      )
+   }
+
+   senitizerMask=()=>{
+     return(
+       <View style={{borderWidth:0,marginHorizontal:12}}>
+
+         <View style={{justifyContent:'space-between',flexDirection:'row',paddingBottom:4,paddingTop:8}}>
+             <Text style={{fontSize:18}}>Sanetizer,Marsk & Thermometers</Text>
+             <TouchableOpacity onPress={()=>this.props.navigation.navigate('HealthProduct')}>
+               <Text style={{fontSize:18,color:'#55CED2'}}>See All</Text>
+             </TouchableOpacity>
+         </View>
+         <FlatList
+             data={this.state.prod1}
+             showsHorizontalScrollIndicator={false}
+             extraData={this.state.prod1}
+             style={{}}
+             inverted={false}
+             scrollToEnd={true}
+             horizontal={true}
+             nestedScrollEnabled={true}
+             keyExtractor={(item, index) => index.toString()}
+             renderItem={({item, index})=>{
+            return(
+          <View style={{flex:1,backgroundColor:'#fff',paddingLeft:index==0?10:0,paddingRight:15,paddingTop:8}}>
+            <TouchableWithoutFeedback onPress={()=>this.props.navigation.navigate('SenitizerScreen',{item:item})}>
+              <View>
+                <Card containerStyle={[ {borderWidth: 0, borderColor: '#fff',borderRadius:15,height:width*0.33,width:width*0.33,margin:0,padding:0,marginRight:0,marginLeft:0}]}>
+                   <View style={{height:'100%'}}>
+                     <View style={{position:'absolute',left:0,right:0,top:0,bottom:0,}}>
+                           <Image source={item.uri} style={{width:'100%', height:'100%',marginTop:0,borderRadius:15,backgroundColor:'#fff'}}
+                           resizeMode={'contain'}/>
+                     </View>
+                   </View>
+                </Card>
+                <View style={{flex:1,alignItems:'center',justifyContent:'center',height:40,width:width*0.33}}>
+                    <Text style={{ fontSize: 14, color: 'grey', fontWeight: '300', marginHorizontal: 20,textAlign:'center' }} numberOfLines={1}>{item.name}</Text>
+                </View>
+              </View>
+              </TouchableWithoutFeedback>
+            </View>
+          ) }}
+          />
+        </View>
+     )
+   }
+   healthPolicy=()=>{
+     // AsyncStorage.getItem('login').then(login => {
+     // if(JSON.parse(login) == 'true' || JSON.parse(login) == true){
+     //   this.setState({login:true})
+     //   return this.props.navigation.navigate('HealthPolicy')
+     // }else{
+     //   AsyncStorage.clear();
+     //   AsyncStorage.setItem("login", JSON.stringify(false))
+     //   this.setState({login:false})
+       return this.props.navigation.navigate('HealthPolicyLogout')
+     // }
+     // }).done();
    }
 
   render() {
@@ -105,15 +227,15 @@ class HomeScreen extends React.Component {
                        <FontAwesome name={'bars'} size={20} style={{height:20,width:20,tintColor:'#000'}} color={'#000'} />
                    </TouchableOpacity>
                    <View style={{ marginHorizontal: 10 }} >
-                      <Image source={require('../assets/ifocus/logo.png')} style={{height:30,width:30}}  />
+                      <Image source={require('../assets/ifocus/logo.png')} style={{height:30,width:30}}resizeMode={'contain'}  />
                    </View>
                </View>
                <View style={{flexDirection:'row',alignItems:'center'}}>
                    <TouchableOpacity style={{ marginHorizontal: 8 }} onPress={()=>this.props.navigation.navigate('Notification')}  >
-                      <Image source={require('../assets/ifocus/Notification.png')} style={{height:22,width:20}}  />
+                      <Image source={require('../assets/ifocus/Notification.png')} style={{height:22,width:20}} resizeMode={'contain'} />
                    </TouchableOpacity>
                    <TouchableOpacity style={{ marginHorizontal: 10 ,paddingRight:5}} onPress={()=>this.props.navigation.navigate('CartScreen')}  >
-                      <Image source={require('../assets/ifocus/cart.png')}style={{height:22,width:20}}  />
+                      <Image source={require('../assets/ifocus/cart.png')}style={{height:22,width:20}} resizeMode={'contain'} />
                    </TouchableOpacity>
               </View>
            </View>
@@ -137,19 +259,19 @@ class HomeScreen extends React.Component {
                    <TouchableOpacity
                         style={{borderWidth:0,height:width*0.25,width:width*0.25,alignItems:'center',justifyContent:'center'}}
                         onPress={()=>this.props.navigation.navigate('HealthProduct')}>
-                       <Image source={require('../assets/ifocus/healthproducts.png')} style={{width:50,height:50}}/>
+                       <Image source={require('../assets/ifocus/healthproducts.png')} style={{width:50,height:50}} resizeMode={'contain'}/>
                        <Text style={{fontSize:14,paddingTop:6,textAlign:'center'}}>Health Product</Text>
                    </TouchableOpacity>
                    <TouchableOpacity
                         style={{borderWidth:0,height:width*0.25,width:width*0.25,alignItems:'center',justifyContent:'center'}}
-                        onPress={()=>this.props.navigation.navigate('HealthPolicy')}>
-                        <Image source={require('../assets/ifocus/healthproducts.png')} style={{width:50,height:50}}/>
+                        onPress={()=>this.healthPolicy()}>
+                        <Image source={require('../assets/ifocus/healthproducts.png')} style={{width:50,height:50}} resizeMode={'contain'}/>
                         <Text style={{fontSize:14,paddingTop:6,textAlign:'center'}}>Health Policy</Text>
                    </TouchableOpacity>
                    <TouchableOpacity
                          style={{borderWidth:0,height:width*0.25,width:width*0.25,alignItems:'center',justifyContent:'center'}}
                          onPress={()=>this.props.navigation.navigate('Survey')}>
-                         <Image source={require('../assets/ifocus/healthproducts.png')} style={{width:50,height:50}}/>
+                         <Image source={require('../assets/ifocus/healthproducts.png')} style={{width:50,height:50}} resizeMode={'contain'}/>
                          <Text style={{fontSize:14,paddingTop:6,textAlign:'center'}}>Survey</Text>
                    </TouchableOpacity>
                </View>
@@ -159,83 +281,9 @@ class HomeScreen extends React.Component {
                <ScrollView style={{paddingTop:10}}>
                  <MyCarousel/>
 
-                 <View style={{borderWidth:0,marginHorizontal:12}}>
-                     <View style={{justifyContent:'space-between',flexDirection:'row',paddingBottom:4,paddingTop:8}}>
-                         <Text style={{fontSize:18}}>Daily Essential</Text>
-                         <TouchableOpacity onPress={()=>this.props.navigation.navigate('HealthProduct')}>
-                           <Text style={{fontSize:18,color:'#55CED2'}}>See All</Text>
-                         </TouchableOpacity>
-                     </View>
-                     <FlatList
-                         data={this.state.prod}
-                         showsHorizontalScrollIndicator={false}
-                         extraData={this.state.prod}
-                         style={{}}
-                         inverted={false}
-                         scrollToEnd={true}
-                         horizontal={true}
-                         nestedScrollEnabled={true}
-                         keyExtractor={(item, index) => index.toString()}
-                         renderItem={({item, index})=>{
-                        return(
-                      <View style={{flex:1,backgroundColor:'#fff',paddingLeft:index==0?10:0,paddingRight:15,paddingTop:8}}>
-                        <TouchableWithoutFeedback  onPress={()=>this.props.navigation.navigate('Multivitamins',{item:item})} >
-                          <View>
-                            <Card containerStyle={[ {borderWidth: 0, borderColor: '#fff',borderRadius:15,height:width*0.33,width:width*0.33,margin:0,padding:0,marginRight:0,marginLeft:0}]}>
-                               <View style={{height:'100%'}}>
-                                 <View style={{position:'absolute',left:0,right:0,top:0,bottom:0,}}>
-                                       <Image source={item.uri} style={{width:'100%', height:'100%',marginTop:0,borderRadius:15,backgroundColor:'#fff'}}/>
-                                 </View>
-                               </View>
-                            </Card>
-                            <View style={{flex:1,alignItems:'center',justifyContent:'center',height:40,width:width*0.33}}>
-                                <Text style={{ fontSize: 14, color: 'grey', fontWeight: '300', marginHorizontal: 20,textAlign:'center' }} numberOfLines={1}>{item.name}</Text>
-                            </View>
-                          </View>
-                          </TouchableWithoutFeedback>
-                        </View>
-                      ) }}
-                      />
-                    </View>
-                    <View style={{borderWidth:0,marginHorizontal:12}}>
+                 {this.dailyEssential()}
+                 {this.senitizerMask()}
 
-                      <View style={{justifyContent:'space-between',flexDirection:'row',paddingBottom:4,paddingTop:8}}>
-                          <Text style={{fontSize:18}}>Sanetizer,Marsk & Thermometers</Text>
-                          <TouchableOpacity onPress={()=>this.props.navigation.navigate('HealthProduct')}>
-                            <Text style={{fontSize:18,color:'#55CED2'}}>See All</Text>
-                          </TouchableOpacity>
-                      </View>
-                      <FlatList
-                          data={this.state.prod1}
-                          showsHorizontalScrollIndicator={false}
-                          extraData={this.state.prod1}
-                          style={{}}
-                          inverted={false}
-                          scrollToEnd={true}
-                          horizontal={true}
-                          nestedScrollEnabled={true}
-                          keyExtractor={(item, index) => index.toString()}
-                          renderItem={({item, index})=>{
-                         return(
-                       <View style={{flex:1,backgroundColor:'#fff',paddingLeft:index==0?10:0,paddingRight:15,paddingTop:8}}>
-                         <TouchableWithoutFeedback onPress={()=>this.props.navigation.navigate('SenitizerScreen',{item:item})}>
-                           <View>
-                             <Card containerStyle={[ {borderWidth: 0, borderColor: '#fff',borderRadius:15,height:width*0.33,width:width*0.33,margin:0,padding:0,marginRight:0,marginLeft:0}]}>
-                                <View style={{height:'100%'}}>
-                                  <View style={{position:'absolute',left:0,right:0,top:0,bottom:0,}}>
-                                        <Image source={item.uri} style={{width:'100%', height:'100%',marginTop:0,borderRadius:15,backgroundColor:'#fff'}}/>
-                                  </View>
-                                </View>
-                             </Card>
-                             <View style={{flex:1,alignItems:'center',justifyContent:'center',height:40,width:width*0.33}}>
-                                 <Text style={{ fontSize: 14, color: 'grey', fontWeight: '300', marginHorizontal: 20,textAlign:'center' }} numberOfLines={1}>{item.name}</Text>
-                             </View>
-                           </View>
-                           </TouchableWithoutFeedback>
-                         </View>
-                       ) }}
-                       />
-                       </View>
                </ScrollView>
             </View>
      </View>
@@ -283,13 +331,11 @@ class MyCarousel extends React.Component {
     }
     _renderItem ({item, index}) {
         return <View
-
                   style={{width:width*0.95,height:width*0.25,borderWidth:0,
                           justifyContent:'center',
                           borderRadius:10,alignItems:'center'}}>
-
                   <View style={{width:width*0.95,height:width*0.25,borderWidth:0,borderColor:'#fff',alignSelf:'center',marginLeft:8}}>
-                      <Image  source={require('../assets/ifocus/banner1.png')} style={{width:'100%',height:'100%'}}/>
+                      <Image  source={require('../assets/ifocus/banner1.png')} style={{width:'100%',height:'100%'}}resizeMode={'contain'}/>
                   </View>
           </View>
     }

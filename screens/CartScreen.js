@@ -3,13 +3,13 @@ import {
   Image,
   Platform,
   ScrollView,
-  StyleSheet,
-  Text,
+  StyleSheet,Alert,
+  Text,ToastAndroid,
   TouchableOpacity,
-  View,
-TouchableWithoutFeedback,
+  View,Linking,PermissionsAndroid,
+  TouchableWithoutFeedback,
   Dimensions,ImageBackground,
-  TextInput, FlatList, AsyncStorage, Alert, Linking, PermissionsAndroid, ToastAndroid,ActivityIndicator
+  TextInput, FlatList, AsyncStorage,ActivityIndicator
 } from 'react-native';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import { FontAwesome,MaterialIcons,Entypo ,Ionicons} from '@expo/vector-icons';
@@ -34,9 +34,6 @@ import { Dropdown } from 'react-native-material-dropdown';
 import DatePicker from 'react-native-datepicker';
 import { Slider } from 'react-native-elements';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
-// import {Slider} from 'react-native-slider';
-// import VolumeSlider from 'react-native-volume-slider';
-// import { Player } from 'react-native-audio-streaming';
 import { Audio } from 'expo-av';
 import { ScrollableTabView, DefaultTabBar, ScrollableTabBar, } from '@valdio/react-native-scrollable-tabview';
 import TabBar from '../components/TabBar';
@@ -47,9 +44,7 @@ class CartScreen extends React.Component {
 
   static navigationOptions = {
     header:null,
-
   }
-
 
   constructor(props) {
     super(props);
@@ -85,55 +80,38 @@ class CartScreen extends React.Component {
     this.playbackInstance = null;
   }
 
+    next=(item)=>{
+      console.log('ddddddddddddddddddddd')
+      if(item.name=='sanitizer & handwash'){
+        this.props.navigation.navigate('SenitizerScreen',{item:item});
+      }
+      else if(item.name=='multivitamins'){
+        this.props.navigation.navigate('Multivitamins',{item:item});
+      }
+      else if(item.name=='cough & cold'){
+        this.props.navigation.navigate('CoughcoldScreen',{item:item});
+      }else{
+        Alert.alert('page not found');
+      }
+    }
 
-  // componentDidMount=async()=>{
-  //   this.getStore()
-  // }
-
-
-next=(item)=>{
-  console.log('ddddddddddddddddddddd')
-  if(item.name=='sanitizer & handwash'){
-    this.props.navigation.navigate('SenitizerScreen',{item:item});
-  }
-  else if(item.name=='multivitamins'){
-    this.props.navigation.navigate('Multivitamins',{item:item});
-  }
-  else if(item.name=='cough & cold'){
-    this.props.navigation.navigate('CoughcoldScreen',{item:item});
-  }else{
-    Alert.alert('page not found');
-  }
-}
-
-
-     minus = (item,index)=>{
-         // if(this.state.count==0){
-         //   this.setState({count:this.state.count})
-         //   return
-         // }
-         // this.setState({count:this.state.count-1})
-
+    minus = (item,index)=>{
          if(this.state.prod[index].count==1){
            this.state.prod[index].add = false;
            this.setState({prod:this.state.prod})
            return
-
-
          }
          this.state.prod[index].count = this.state.prod[index].count-1;
          this.setState({prod:this.state.prod})
-      }
-
-     plus = (item,index)=>{
-         // this.setState({count:this.state.count+1})
+    }
+    plus = (item,index)=>{
          this.state.prod[index].count = this.state.prod[index].count+1;
          this.setState({prod:this.state.prod})
-      }
-      add=(item,index)=>{
+    }
+    add=(item,index)=>{
         this.state.prod[index].add = true;
         this.setState({prod:this.state.prod})
-      }
+    }
 
 
   render() {
@@ -141,7 +119,6 @@ next=(item)=>{
     console.log(audio,'audio');
     return (
       <View style={{flex:1}}>
-
           <View style={{height:Constants.statusBarHeight,backgroundColor:'#103368'}}></View>
           <View  style={{justifyContent:'space-between',backgroundColor:'#fff',borderBottomWidth:0.5,
                           height:55,width:width,flexDirection:'row',alignItems:'center'}}>
@@ -151,13 +128,8 @@ next=(item)=>{
               </TouchableOpacity>
               <Text style={{fontSize:20,marginHorizontal:10,marginRight:width*0.6}}>CartItem</Text>
               </View>
-
           </View>
-
-          {/* <View style={{paddingHorizontal:15,paddingVertical:10,marginVertical:15}}><Text style={{fontSize:25}}>Health Product</Text></View> */}
           <ScrollView style={{marginVertical:0,backgroundColor:'#fff',paddingBottom:200}}>
-
-
        <FlatList
                 data={this.state.prod}
                 showsHorizontalScrollIndicator={false}
@@ -171,13 +143,12 @@ next=(item)=>{
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({item, index})=>{
                return(
-             <TouchableOpacity style={{flex:1,borderWidth:1,borderColor:'#C7C7C7',width:width*0.95,backgroundColor:'#fff',paddingHorizontal:10,paddingTop:8,marginVertical:8,marginHorizontal:10}}
-                            >
+             <TouchableOpacity style={{flex:1,borderWidth:1,borderColor:'#C7C7C7',width:width*0.95,backgroundColor:'#fff',paddingHorizontal:10,paddingTop:8,marginVertical:8,marginHorizontal:10}}>
                <TouchableOpacity >
                  <View style={{flex:1,flexDirection:'row',paddingVertical:8}}>
                    <View style={{flex:0.3,}}>
                      <View style={{width:width*0.2,height:width*0.2,borderWidth:0}}>
-                       <Image source={item.uri} style={{height:'100%',width:'100%'}}/>
+                       <Image source={item.uri} style={{height:'100%',width:'100%'}}resizeMode={'contain'}/>
                      </View>
                    </View>
                    <View style={{flex:0.5,}}>
@@ -185,20 +156,18 @@ next=(item)=>{
                      <Text style={{ fontSize: 16, color: 'grey', fontWeight: '300',textAlign:'left' }}>{item.name2}</Text>
                      <Text style={{ fontSize: 16, color: 'grey', fontWeight: '300',textAlign:'left' }}>&#8377;120&#8377;150</Text>
                    </View>
-                   <View style={{flex:0.2,}}>
-                     <View style={{width:width*0.2,flexDirection:'row',justifyContent:'center',alignItems:'center',borderWidth:1,borderRadius:17}}>
+                   <View style={{flex:0.2,borderWidth:0}}>
+                     <View style={{width:width*0.18,flexDirection:'row',justifyContent:'center',alignItems:'center',borderColor:'#7c7c7c',borderWidth:1,borderRadius:17}}>
                                 <TouchableOpacity onPress={()=>{this.minus(item,index)}} style={{borderWidth:0,paddingVertical:0,paddingHorizontal:6}}>
                                   <Text style={{paddingHorizontal:4,fontSize:22}}>-</Text>
                                 </TouchableOpacity>
-
-                                <Text style={{paddingHorizontal:10}}>{item.count}</Text>
+                                <Text style={{paddingHorizontal:8}}>{item.count}</Text>
                                 <TouchableOpacity onPress={()=>{this.plus(item,index)}}style={{borderWidth:0,paddingVertical:0,paddingHorizontal:6}}>
                                   <Text style={{paddingHorizontal:4,fontSize:22}}>+</Text>
                                   </TouchableOpacity>
                               </View>
                    </View>
                  </View>
-
                  </TouchableOpacity>
                </TouchableOpacity>
              ) }}
@@ -213,18 +182,6 @@ next=(item)=>{
   }
 }
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     alignItems: 'center',
-//     justifyContent: 'space-between',
-//
-//   },
-//   slider: {
-//     height: 30,
-//     marginLeft: 7,
-//   }
-// });
 const styles = StyleSheet.create({
  container: {
   flex: 1,

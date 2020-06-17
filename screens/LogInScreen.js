@@ -84,7 +84,7 @@ class LogInScreen extends React.Component {
                     style={{borderWidth:0,borderRadius:20,backgroundColor:'#12318B',
                             marginBottom:width*0.1,shadowColor:"#fefefe",shadowOpacity:0.2,shadowRadius:15,
                             shadowOffset:{height:2,width:0},elevation:5,}}>
-                    {/* <MaterialIcons name={'arrow-forward'} size={20} style={{paddingVertical:20,paddingHorizontal:20}}/> */}
+                  
                     <Text style={{paddingVertical:10,paddingHorizontal:50,fontSize:18,color:'#fff'}}>Send OTP</Text>
               </TouchableOpacity>
           </View>
